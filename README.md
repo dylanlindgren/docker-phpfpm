@@ -23,7 +23,7 @@ docker build -t [IMAGENAME] .
 ```
 
 ## www data
-The volumes that are published to your nginx container should also be published to your PHP-FPM container at the same location
+Website data will be mounted inside the container at `/data/www`. As PHP-FPM looks for website files in the same location as they're requested of Nginx, we will use the `--volumes-from` command when launching the Nginx container to map the website data in the same location. The directory structure will be like below. 
 ```
 /data
 |
