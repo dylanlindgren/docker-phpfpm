@@ -58,8 +58,8 @@ To run this container as a service on a [Systemd](http://www.freedesktop.org/wik
 ```bash
 [Unit]
 Description=PHP-FPM docker container
-After=php-fpm.service docker.service
-Requires=php-fpm.service docker.service
+After=docker.service
+Requires=docker.service
 
 [Service]
 Type=oneshot
