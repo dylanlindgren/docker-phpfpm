@@ -54,7 +54,7 @@ To start the container again:
 docker start php
 ```
 ### Running as a Systemd service
-To run this container as a service on a [Systemd](http://www.freedesktop.org/wiki/Software/systemd/) based distro (e.g. CentOS 7), create a unit file under `/etc/systemd/system` called `docker-phpfpm.service` with the below contents
+To run this container as a service on a [Systemd](http://www.freedesktop.org/wiki/Software/systemd/) based distro (e.g. CentOS 7), create a unit file under `/etc/systemd/system` called `php-fpm.service` with the below contents
 ```bash
 [Unit]
 Description=PHP-FPM Docker container (dylanlindgren/docker-phpfpm)
@@ -72,11 +72,11 @@ ExecStop=/usr/bin/docker stop phpfpm
 [Install]
 WantedBy=multi-user.target
 ```
-Then you can start/stop/restart the container with the regular Systemd commands e.g. `systemctl start docker-phpfpm.service`.
+Then you can start/stop/restart the container with the regular Systemd commands e.g. `systemctl start php-fpm.service`.
 
-To automatically start the container when you restart enable the unit file with the command `systemctl enable docker-phpfpm.service`.
+To automatically start the container when you restart enable the unit file with the command `systemctl enable php-fpm.service`.
 
-Something to note is that this service will be depended on by the `docker-nginx.service` setup with [dylanlindgren/docker-nginx](https://github.com/dylanlindgren/docker-nginx).
+Something to note is that this service will be depended on by the `nginx.service` setup with [dylanlindgren/docker-nginx](https://github.com/dylanlindgren/docker-nginx).
 
 ## Acknowledgements
 The below two blog posts were very useful in the creation of both of these projects.
