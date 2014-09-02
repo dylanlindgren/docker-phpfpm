@@ -57,17 +57,17 @@ docker start php
 To run this container as a service on a [Systemd](http://www.freedesktop.org/wiki/Software/systemd/) based distro (e.g. CentOS 7), create a unit file under `/etc/systemd/system` called `docker-phpfpm.service` with the below contents
 ```bash
 [Unit]
-Description=PHP-FPM docker container
+Description=PHP-FPM Docker container (dylanlindgren/docker-phpfpm)
 After=docker.service
 Requires=docker.service
 
 [Service]
-Type=oneshot
-RemainAfterExit=yes
 TimeoutStartSec=0
-ExecStartPre=-/usr/bin/docker stop php
-ExecStart=/usr/bin/docker start php
-ExecStop=/usr/bin/docker stop php
+ExecStartPre=-/usr/bin/docker stop phpfpm
+ExecStartPre=-/usr/bin/docker rm phpfpm
+ExecStartPre=-/usr/bin/docker pull dylanlindgren/docker-phpfpm
+ExecStart=/usr/bin/docker run --privileged=true -p 9000 --name phpfpm -v /data/www:/data/www:rw dylanlindgren/docker-phpfpm
+ExecStop=/usr/bin/docker stop phpfpm
 
 [Install]
 WantedBy=multi-user.target
