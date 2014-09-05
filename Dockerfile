@@ -12,7 +12,7 @@ RUN rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 RUN yum update -y
 
 # Install PHP-FPM
-RUN yum --enablerepo=remi install -y php-cli php-fpm php-mysqlnd php-mssql php-pgsql php-gd php-mcrypt php-ldap php-imap
+RUN yum --enablerepo=remi install -y php-cli php-fpm php-mysqlnd php-mssql php-xml php-pgsql php-gd php-mcrypt php-ldap php-imap
 
 # Configure PHP to UTC timezone.
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini
