@@ -3,23 +3,10 @@
 docker-phpfpm is a CentOS-based docker container for [PHP-FPM](http://php-fpm.org). It is intended for use with [dylanlindgren/docker-nginx](https://github.com/dylanlindgren/docker-nginx).
 
 ## Getting the image
-### Option A: Pull from the Docker Hub
 This image is published in the [Docker Hub](https://registry.hub.docker.com/). Simply run the below command to get it on your machine:
 
 ```bash
 docker pull dylanlindgren/docker-phpfpm
-```
-### Option B: Build from source
-First, `cd` into a directory where you store your Docker repos and clone this repo:
-
-```bash
-git clone https://github.com/dylanlindgren/docker-phpfpm.git
-```
-
-`cd` into the newly created `docker-phpfpm` directory and build the image (replacing `[IMAGENAME]` in the below command with anything you want to call the image once it's built eg: *dylan/phpfpm*):
-
-```bash
-docker build -t [IMAGENAME] .
 ```
 
 ## www data
@@ -37,12 +24,13 @@ Website data will be mounted inside the container at `/data/www`. As PHP-FPM loo
 ## Creating and running the container
 To create and run the container:
 ```bash
-docker run --privileged=true -p 9000 --name php -v /data/www:/data/www:rw -d dylanlindgren/docker-phpfpm
+docker run --privileged=true --name php -v /data/www:/data/www:rw -d dylanlindgren/docker-phpfpm
 ```
- - `-p` publishes the container's 9000 port to a randomly assigned port number.
  - `--name` sets the name of the container (useful when starting/stopping, and will be used when launching your Nginx container).
  - `-v` maps the `/data/www` folder as read/write (rw).
  - `-d` runs the container as a daemon
+ 
+**Note:** no need to publish any ports, as we will be using the `--link` switch in our Nginx container, which will make available to Nginx the 9000 port.
 
 To stop the container:
 ```bash
@@ -66,7 +54,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker stop phpfpm
 ExecStartPre=-/usr/bin/docker rm phpfpm
 ExecStartPre=-/usr/bin/docker pull dylanlindgren/docker-phpfpm
-ExecStart=/usr/bin/docker run --privileged=true -p 9000 --name phpfpm -v /data/www:/data/www:rw dylanlindgren/docker-phpfpm
+ExecStart=/usr/bin/docker run --privileged=true --name phpfpm -v /data/www:/data/www:rw dylanlindgren/docker-phpfpm
 ExecStop=/usr/bin/docker stop phpfpm
 
 [Install]
