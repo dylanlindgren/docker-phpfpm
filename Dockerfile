@@ -17,7 +17,13 @@ RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-1.no
         php-mcrypt \
         php-ldap \
         php-imap \
-        php-soap
+        php-soap \
+        php-mbstring \
+        php-pecl-memcache \
+        php-pecl-memcached \
+        php-pecl-mongo \
+        php-pear \
+        php-pdo
 
 # Configure and secure PHP
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
@@ -26,7 +32,11 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
     sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php.ini && \
     sed -i '/^listen = /clisten = 0.0.0.0:9000' /etc/php-fpm.d/www.conf && \
     sed -i '/^listen.allowed_clients/c;listen.allowed_clients =' /etc/php-fpm.d/www.conf && \
-    sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php-fpm.d/www.conf
+    sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php-fpm.d/www.conf && \
+    sed -i "s/php_admin_flag\[log_errors\] = .*/;php_admin_flag[log_errors] =/" /etc/php-fpm.d/www.conf && \
+    sed -i "s/php_admin_value\[error_log\] =.*/;php_admin_value[error_log] =/" /etc/php-fpm.d/www.conf && \
+    sed -i "s/php_admin_value\[error_log\] =.*/;php_admin_value[error_log] =/" /etc/php-fpm.d/www.conf && \
+    echo "php_admin_value[display_errors] = 'stderr'" >> /etc/php-fpm.d/www.conf
 
 # DATA VOLUMES
 RUN mkdir -p /data/nginx/www
